@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PKstudio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=BPG+Nino+Mtavruli&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8C87A;
+    --dark: #0E0E0E;
+    --dark2: #161616;
+    --dark3: #1E1E1E;
+    --gray: #888;
+    --light: #F5F3EE;
+    --white: #ffffff;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    background: var(--dark);
+    color: var(--light);
+    overflow-x: hidden;
+  }
+
+  .ka { font-family: 'BPG Nino Mtavruli', 'Sylfaen', Georgia, serif; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 4rem;
+    background: rgba(14,14,14,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 0.5px solid rgba(201,168,76,0.2);
+  }
+
+  .logo {
+    font-size: 1.6rem; font-weight: 700; letter-spacing: 0.12em;
+    color: var(--gold);
+    text-decoration: none;
+  }
+  .logo span { color: var(--light); }
+
+  nav ul { list-style: none; display: flex; gap: 2.5rem; }
+  nav ul a {
+    text-decoration: none; font-size: 0.82rem; letter-spacing: 0.08em;
+    color: var(--gray); text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  nav ul a:hover { color: var(--gold); }
+
+  .nav-cta {
+    background: var(--gold); color: var(--dark) !important;
+    padding: 0.5rem 1.4rem; border-radius: 2px;
+    font-weight: 600 !important; color: var(--dark) !important;
+    transition: background 0.2s !important;
+  }
+  .nav-cta:hover { background: var(--gold-light) !important; color: var(--dark) !important; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    padding: 8rem 2rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: 
+      radial-gradient(ellipse 60% 50% at 50% 60%, rgba(201,168,76,0.06) 0%, transparent 70%),
+      repeating-linear-gradient(0deg, transparent, transparent 80px, rgba(201,168,76,0.03) 80px, rgba(201,168,76,0.03) 81px),
+      repeating-linear-gradient(90deg, transparent, transparent 80px, rgba(201,168,76,0.03) 80px, rgba(201,168,76,0.03) 81px);
+  }
+
+  .hero-eyebrow {
+    font-size: 0.75rem; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 1.5rem;
+    border: 0.5px solid rgba(201,168,76,0.4);
+    padding: 0.4rem 1.2rem; border-radius: 2px;
+    display: inline-block;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.8rem, 7vw, 5.5rem);
+    font-weight: 300;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+    color: var(--white);
+  }
+
+  .hero h1 strong {
+    font-weight: 700;
+    color: var(--gold);
+    display: block;
+  }
+
+  .hero p {
+    font-size: 1.05rem; color: var(--gray);
+    max-width: 520px; line-height: 1.7;
+    margin-bottom: 2.5rem;
+  }
+
+  .hero-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+  .btn-primary {
+    background: var(--gold); color: var(--dark);
+    padding: 0.85rem 2.2rem; border: none;
+    font-size: 0.85rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    cursor: pointer; border-radius: 2px;
+    transition: background 0.2s, transform 0.15s;
+    text-decoration: none; display: inline-block;
+  }
+  .btn-primary:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+  .btn-outline {
+    background: transparent; color: var(--light);
+    padding: 0.85rem 2.2rem;
+    border: 0.5px solid rgba(245,243,238,0.3);
+    font-size: 0.85rem; font-weight: 400; letter-spacing: 0.08em; text-transform: uppercase;
+    cursor: pointer; border-radius: 2px;
+    transition: border-color 0.2s, color 0.2s;
+    text-decoration: none; display: inline-block;
+  }
+  .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* STATS */
+  .stats {
+    display: flex; justify-content: center; gap: 0; flex-wrap: wrap;
+    margin-top: 5rem; position: relative; z-index: 1;
+    border-top: 0.5px solid rgba(201,168,76,0.2);
+    padding-top: 3rem; width: 100%; max-width: 700px;
+  }
+  .stat { flex: 1; min-width: 140px; text-align: center; padding: 0 2rem; }
+  .stat + .stat { border-left: 0.5px solid rgba(201,168,76,0.15); }
+  .stat-num { font-size: 2.4rem; font-weight: 700; color: var(--gold); display: block; }
+  .stat-label { font-size: 0.75rem; color: var(--gray); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 0.3rem; display: block; }
+
+  /* SECTION COMMONS */
+  section { padding: 6rem 4rem; }
+  .section-tag {
+    font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 1rem; display: block;
+  }
+  .section-title {
+    font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 300;
+    color: var(--white); line-height: 1.2;
+  }
+  .section-title strong { font-weight: 700; }
+  .section-sub {
+    font-size: 0.95rem; color: var(--gray); line-height: 1.7;
+    max-width: 480px; margin-top: 1rem;
+  }
+
+  /* SERVICES */
+  .services { background: var(--dark2); }
+  .services-header { text-align: center; margin-bottom: 4rem; }
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5px;
+    background: rgba(201,168,76,0.15);
+    border: 0.5px solid rgba(201,168,76,0.15);
+  }
+  .service-card {
+    background: var(--dark2);
+    padding: 2.5rem;
+    transition: background 0.2s;
+    cursor: default;
+  }
+  .service-card:hover { background: var(--dark3); }
+  .service-icon {
+    width: 48px; height: 48px;
+    border: 0.5px solid rgba(201,168,76,0.4);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem; margin-bottom: 1.5rem; color: var(--gold);
+  }
+  .service-card h3 {
+    font-size: 1rem; font-weight: 600; color: var(--white);
+    margin-bottom: 0.7rem; letter-spacing: 0.03em;
+  }
+  .service-card p { font-size: 0.85rem; color: var(--gray); line-height: 1.6; }
+  .service-price {
+    margin-top: 1.2rem; font-size: 0.8rem;
+    color: var(--gold); letter-spacing: 0.05em;
+  }
+
+  /* PROCESS */
+  .process { background: var(--dark); }
+  .process-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center; }
+  .process-steps { display: flex; flex-direction: column; gap: 0; }
+  .process-step {
+    display: flex; gap: 1.5rem; padding: 1.5rem 0;
+    border-bottom: 0.5px solid rgba(255,255,255,0.06);
+  }
+  .step-num {
+    font-size: 0.7rem; color: var(--gold); letter-spacing: 0.1em;
+    min-width: 32px; padding-top: 3px;
+  }
+  .step-content h4 { font-size: 0.95rem; font-weight: 600; color: var(--white); margin-bottom: 0.4rem; }
+  .step-content p { font-size: 0.82rem; color: var(--gray); line-height: 1.6; }
+
+  .process-visual {
+    background: var(--dark3);
+    border: 0.5px solid rgba(201,168,76,0.2);
+    padding: 3rem;
+    text-align: center;
+  }
+  .process-visual-inner {
+    width: 180px; height: 180px;
+    border: 0.5px solid rgba(201,168,76,0.3);
+    border-radius: 50%;
+    margin: 0 auto;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 3.5rem; color: var(--gold);
+    position: relative;
+  }
+  .process-visual-inner::before {
+    content: '';
+    position: absolute; inset: 12px;
+    border: 0.5px solid rgba(201,168,76,0.15);
+    border-radius: 50%;
+  }
+  .process-tagline {
+    margin-top: 2rem; font-size: 0.8rem; color: var(--gray);
+    letter-spacing: 0.12em; text-transform: uppercase;
+  }
+
+  /* PORTFOLIO */
+  .portfolio { background: var(--dark2); }
+  .portfolio-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3rem; }
+  .portfolio-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5px; background: rgba(201,168,76,0.1); }
+  .portfolio-item {
+    background: var(--dark3);
+    aspect-ratio: 4/3;
+    position: relative; overflow: hidden; cursor: pointer;
+    display: flex; align-items: flex-end;
+  }
+  .portfolio-item-bg {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 3.5rem; opacity: 0.08;
+    color: var(--gold);
+  }
+  .portfolio-overlay {
+    position: absolute; inset: 0;
+    background: rgba(14,14,14,0.85);
+    opacity: 0; transition: opacity 0.3s;
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 0.5rem;
+  }
+  .portfolio-item:hover .portfolio-overlay { opacity: 1; }
+  .portfolio-info { padding: 1.2rem; position: relative; z-index: 1; width: 100%; }
+  .portfolio-info h4 { font-size: 0.85rem; font-weight: 600; color: var(--white); }
+  .portfolio-info p { font-size: 0.72rem; color: var(--gold); margin-top: 0.2rem; }
+  .portfolio-overlay span { font-size: 0.75rem; color: var(--gold); letter-spacing: 0.1em; text-transform: uppercase; }
+
+  /* TESTIMONIALS */
+  .testimonials { background: var(--dark); }
+  .testimonials-header { text-align: center; margin-bottom: 4rem; }
+  .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1px; background: rgba(201,168,76,0.1); }
+  .testimonial-card {
+    background: var(--dark);
+    padding: 2rem;
+  }
+  .stars { color: var(--gold); font-size: 0.85rem; margin-bottom: 1rem; letter-spacing: 0.2em; }
+  .testimonial-card blockquote {
+    font-size: 0.88rem; color: var(--gray); line-height: 1.7;
+    font-style: italic; margin-bottom: 1.5rem;
+  }
+  .testimonial-author { display: flex; align-items: center; gap: 0.8rem; }
+  .author-avatar {
+    width: 38px; height: 38px; border-radius: 50%;
+    background: rgba(201,168,76,0.15);
+    border: 0.5px solid rgba(201,168,76,0.3);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.75rem; color: var(--gold); font-weight: 600;
+  }
+  .author-info strong { font-size: 0.85rem; color: var(--white); display: block; }
+  .author-info span { font-size: 0.75rem; color: var(--gray); }
+
+  /* CONTACT */
+  .contact {
+    background: var(--dark2);
+    display: flex; flex-direction: column; align-items: center;
+    text-align: center;
+    padding: 7rem 2rem;
+  }
+  .contact-form {
+    margin-top: 3rem; width: 100%; max-width: 520px;
+    display: flex; flex-direction: column; gap: 1rem;
+  }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .contact-form input, .contact-form textarea, .contact-form select {
+    width: 100%; padding: 0.85rem 1.1rem;
+    background: var(--dark3); border: 0.5px solid rgba(201,168,76,0.2);
+    color: var(--light); font-size: 0.85rem; border-radius: 2px;
+    outline: none; transition: border-color 0.2s;
+    font-family: inherit;
+  }
+  .contact-form input:focus, .contact-form textarea:focus, .contact-form select:focus {
+    border-color: var(--gold);
+  }
+  .contact-form input::placeholder, .contact-form textarea::placeholder { color: var(--gray); }
+  .contact-form textarea { min-height: 120px; resize: vertical; }
+  .contact-form select { color: var(--gray); }
+  .contact-form select option { background: var(--dark3); color: var(--light); }
+
+  /* FOOTER */
+  footer {
+    background: var(--dark);
+    border-top: 0.5px solid rgba(201,168,76,0.15);
+    padding: 2rem 4rem;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 1rem;
+  }
+  footer p { font-size: 0.78rem; color: var(--gray); }
+  .footer-links { display: flex; gap: 2rem; }
+  .footer-links a { font-size: 0.78rem; color: var(--gray); text-decoration: none; }
+  .footer-links a:hover { color: var(--gold); }
+
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    nav ul { display: none; }
+    section { padding: 4rem 1.5rem; }
+    .process-layout { grid-template-columns: 1fr; gap: 3rem; }
+    .portfolio-grid { grid-template-columns: 1fr 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+    footer { padding: 1.5rem; flex-direction: column; text-align: center; }
+    .portfolio-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="logo">PK<span>studio</span></a>
+  <ul>
+    <li><a href="#services" class="ka">სერვისები</a></li>
+    <li><a href="#process" class="ka">პროცესი</a></li>
+    <li><a href="#portfolio" class="ka">პორტფოლიო</a></li>
+    <li><a href="#contact" class="nav-cta ka">დაგვიკავშირდი</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-eyebrow ka" style="position:relative;z-index:1;">ვებ სტუდია · თბილისი, საქართველო</div>
+  <h1 class="ka" style="position:relative;z-index:1;">
+    თქვენი ბიზნესი —
+    <strong>ციფრულ სამყაროში</strong>
+  </h1>
+  <p class="ka" style="position:relative;z-index:1;">
+    ჩვენ ვქმნით პროფესიონალურ ვებსაიტებს ქართული კომპანიებისთვის. სწრაფი, თანამედროვე და ეფექტური — ყველა მოწყობილობაზე.
+  </p>
+  <div class="hero-btns" style="position:relative;z-index:1;">
+    <a href="#contact" class="btn-primary ka">უფასო კონსულტაცია</a>
+    <a href="#portfolio" class="btn-outline ka">ჩვენი სამუშაოები</a>
+  </div>
+  <div class="stats" style="position:relative;z-index:1;">
+    <div class="stat">
+      <span class="stat-num">50+</span>
+      <span class="stat-label ka">შესრულებული პროექტი</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">5 დღე</span>
+      <span class="stat-label ka">მიწოდების ვადა</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">100%</span>
+      <span class="stat-label ka">კმაყოფილი კლიენტი</span>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="services-header">
+    <span class="section-tag">სერვისები</span>
+    <h2 class="section-title ka">რასაც <strong>ვთავაზობთ</strong></h2>
+    <p class="section-sub ka" style="margin:1rem auto 0;">ყოველი სერვისი შექმნილია ქართული ბიზნესის სპეციფიკური საჭიროებებისთვის.</p>
+  </div>
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="service-icon">◈</div>
+      <h3 class="ka">კორპორატიული საიტი</h3>
+      <p class="ka">პროფესიონალური ვებსაიტი თქვენი კომპანიისთვის — ბრენდის ამბასადორი ინტერნეტში.</p>
+      <p class="service-price ka">₾ 800 – ₾ 2,000</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">▦</div>
+      <h3 class="ka">ელ-კომერცია</h3>
+      <p class="ka">ონლაინ მაღაზია გადახდის სისტემით, პროდუქტების მართვით და ავტომატური შეკვეთებით.</p>
+      <p class="service-price ka">₾ 1,500 – ₾ 4,000</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">◉</div>
+      <h3 class="ka">Landing Page</h3>
+      <p class="ka">ერთი ძლიერი გვერდი — კლიენტების მოსაზიდად, სერვისის წარსადგენად ან კამპანიისთვის.</p>
+      <p class="service-price ka">₾ 400 – ₾ 900</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">⬡</div>
+      <h3 class="ka">ვებ აპლიკაცია</h3>
+      <p class="ka">მოდერნული ვებ-აპი — დაჯავშნის სისტემები, CRM, პორტალები და სხვა.</p>
+      <p class="service-price ka">₾ 3,000+</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">◌</div>
+      <h3 class="ka">დიზაინი & ბრენდინგი</h3>
+      <p class="ka">ლოგო, ფერთა პალიტრა, ბრენდბუქი — მყარი ვიზუალური იდენტობა თქვენი ბიზნესისთვის.</p>
+      <p class="service-price ka">₾ 300 – ₾ 800</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">◫</div>
+      <h3 class="ka">მხარდაჭერა & SEO</h3>
+      <p class="ka">საიტის ტექნიკური მხარდაჭერა, Google-ში პოზიციონირება და სიჩქარის ოპტიმიზაცია.</p>
+      <p class="service-price ka">₾ 150/თვე</p>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process" id="process">
+  <div class="process-layout">
+    <div>
+      <span class="section-tag">პროცესი</span>
+      <h2 class="section-title ka">როგორ <strong>ვმუშაობთ</strong></h2>
+      <p class="section-sub ka">მარტივი, გამჭვირვალე პროცესი — შედეგამდე 5 ნაბიჯი.</p>
+      <div class="process-steps" style="margin-top:2.5rem;">
+        <div class="process-step">
+          <span class="step-num">01</span>
+          <div class="step-content">
+            <h4 class="ka">კონსულტაცია</h4>
+            <p class="ka">ვხვდებით, ვეცნობით თქვენს ბიზნეს მიზნებს და ვადგენთ ტექნიკურ დავალებას.</p>
+          </div>
+        </div>
+        <div class="process-step">
+          <span class="step-num">02</span>
+          <div class="step-content">
+            <h4 class="ka">დიზაინი</h4>
+            <p class="ka">ვქმნით Figma-ს პროტოტიპს — ვიზუალს ვათანხმებთ სანამ კოდს დავიწყებთ.</p>
+          </div>
+        </div>
+        <div class="process-step">
+          <span class="step-num">03</span>
+          <div class="step-content">
+            <h4 class="ka">დეველოპმენტი</h4>
+            <p class="ka">ვწერთ სუფთა, სწრაფ კოდს. ყოველ ეტაპზე გაძლევთ პრევიუ.</p>
+          </div>
+        </div>
+        <div class="process-step">
+          <span class="step-num">04</span>
+          <div class="step-content">
+            <h4 class="ka">ტესტირება</h4>
+            <p class="ka">ვამოწმებთ ყველა მოწყობილობაზე — მობილურზე, ტაბლეტსა და Desktop-ზე.</p>
+          </div>
+        </div>
+        <div class="process-step" style="border-bottom:none;">
+          <span class="step-num">05</span>
+          <div class="step-content">
+            <h4 class="ka">გაშვება & მხარდაჭერა</h4>
+            <p class="ka">ვაქვეყნებთ საიტს, ვასწავლით მართვას და ვრჩებით გვერდით.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="process-visual">
+      <div class="process-visual-inner">◈</div>
+      <p class="process-tagline ka">5 სამუშაო დღე — მზა საიტი</p>
+      <div style="margin-top:2.5rem; display:flex; flex-direction:column; gap:0.8rem;">
+        <div style="display:flex; justify-content:space-between; font-size:0.8rem; padding: 0.6rem 0; border-bottom:0.5px solid rgba(201,168,76,0.1);">
+          <span class="ka" style="color:var(--gray);">დომენი & ჰოსტინგი</span>
+          <span style="color:var(--gold);" class="ka">ჩართულია</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; font-size:0.8rem; padding: 0.6rem 0; border-bottom:0.5px solid rgba(201,168,76,0.1);">
+          <span class="ka" style="color:var(--gray);">მობილური ვერსია</span>
+          <span style="color:var(--gold);" class="ka">ჩართულია</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; font-size:0.8rem; padding: 0.6rem 0; border-bottom:0.5px solid rgba(201,168,76,0.1);">
+          <span class="ka" style="color:var(--gray);">SSL სერტიფიკატი</span>
+          <span style="color:var(--gold);" class="ka">ჩართულია</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; font-size:0.8rem; padding: 0.6rem 0;">
+          <span class="ka" style="color:var(--gray);">1 თვე მხარდაჭერა</span>
+          <span style="color:var(--gold);" class="ka">უფასო</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section class="portfolio" id="portfolio">
+  <div class="portfolio-header">
+    <div>
+      <span class="section-tag">პორტფოლიო</span>
+      <h2 class="section-title ka">ჩვენი <strong>სამუშაოები</strong></h2>
+    </div>
+    <a href="#contact" class="btn-outline ka" style="font-size:0.78rem; padding:0.6rem 1.4rem;">ყველა პროექტი →</a>
+  </div>
+  <div class="portfolio-grid">
+    <div class="portfolio-item">
+      <div class="portfolio-item-bg">◈</div>
+      <div class="portfolio-overlay">
+        <span class="ka">პროექტის ნახვა</span>
+      </div>
+      <div class="portfolio-info">
+        <h4 class="ka">რესტორანი "არაგვი"</h4>
+        <p class="ka">ელ-კომერცია · თბილისი</p>
+      </div>
+    </div>
+    <div class="portfolio-item">
+      <div class="portfolio-item-bg">▦</div>
+      <div class="portfolio-overlay">
+        <span class="ka">პროექტის ნახვა</span>
+      </div>
+      <div class="portfolio-info">
+        <h4 class="ka">სილამაზის სალონი Luna</h4>
+        <p class="ka">Landing Page · ბათუმი</p>
+      </div>
+    </div>
+    <div class="portfolio-item">
+      <div class="portfolio-item-bg">◉</div>
+      <div class="portfolio-overlay">
+        <span class="ka">პროექტის ნახვა</span>
+      </div>
+      <div class="portfolio-info">
+        <h4 class="ka">იურიდიული ბიურო</h4>
+        <p class="ka">კორპორატიული · თბილისი</p>
+      </div>
+    </div>
+    <div class="portfolio-item">
+      <div class="portfolio-item-bg">⬡</div>
+      <div class="portfolio-overlay">
+        <span class="ka">პროექტის ნახვა</span>
+      </div>
+      <div class="portfolio-info">
+        <h4 class="ka">სამშენებლო კომპანია</h4>
+        <p class="ka">კორპორატიული · ქუთაისი</p>
+      </div>
+    </div>
+    <div class="portfolio-item">
+      <div class="portfolio-item-bg">◌</div>
+      <div class="portfolio-overlay">
+        <span class="ka">პროექტის ნახვა</span>
+      </div>
+      <div class="portfolio-info">
+        <h4 class="ka">ონლაინ ფარმაცია</h4>
+        <p class="ka">ელ-კომერცია · თბილისი</p>
+      </div>
+    </div>
+    <div class="portfolio-item">
+      <div class="portfolio-item-bg">◫</div>
+      <div class="portfolio-overlay">
+        <span class="ka">პროექტის ნახვა</span>
+      </div>
+      <div class="portfolio-info">
+        <h4 class="ka">სასტუმრო Mountain View</h4>
+        <p class="ka">დაჯავშნა · კახეთი</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+  <div class="testimonials-header">
+    <span class="section-tag">გამოხმაურებები</span>
+    <h2 class="section-title ka">კლიენტები <strong>საუბრობენ</strong></h2>
+  </div>
+  <div class="testimonials-grid">
+    <div class="testimonial-card">
+      <div class="stars">★★★★★</div>
+      <blockquote class="ka">"PKstudio-მ ჩვენი ძველი, მოუქნელი საიტი სრულიად გარდაქმნა. გაყიდვები 40%-ით გაიზარდა პირველ თვეშივე."</blockquote>
+      <div class="testimonial-author">
+        <div class="author-avatar">ნმ</div>
+        <div class="author-info">
+          <strong class="ka">ნინო მამულაშვილი</strong>
+          <span class="ka">Boutique Luna-ს მფლობელი</span>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <div class="stars">★★★★★</div>
+      <blockquote class="ka">"სწრაფი, პროფესიონალური, ყოველ კითხვაზე პასუხი ჰქონდათ. 5 დღეში მზა საიტი მივიღე — გაოცებული ვარ."</blockquote>
+      <div class="testimonial-author">
+        <div class="author-avatar">გბ</div>
+        <div class="author-info">
+          <strong class="ka">გიორგი ბერიძე</strong>
+          <span class="ka">BG Construction-ის დირექტორი</span>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <div class="stars">★★★★★</div>
+      <blockquote class="ka">"ძალიან კმაყოფილი ვარ. ჩვენი რესტორნის ონლაინ დაჯავშნები 3-ჯერ გაიზარდა ახალი საიტის შემდეგ."</blockquote>
+      <div class="testimonial-author">
+        <div class="author-avatar">თქ</div>
+        <div class="author-info">
+          <strong class="ka">თამარ ქართველიშვილი</strong>
+          <span class="ka">რესტ. "არაგვის" მმართველი</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <span class="section-tag">კონტაქტი</span>
+  <h2 class="section-title ka">მოდი, <strong>ვისაუბროთ</strong></h2>
+  <p class="section-sub ka">შეავსეთ ფორმა და ჩვენ 24 საათში დაგიკავშირდებით. პირველი კონსულტაცია — უფასო.</p>
+  <form class="contact-form" onsubmit="handleSubmit(event)">
+    <div class="form-row">
+      <input type="text" placeholder="სახელი" class="ka" required>
+      <input type="tel" placeholder="ტელეფონი" required>
+    </div>
+    <input type="text" placeholder="კომპანიის სახელი (არასავალდებულო)" class="ka">
+    <select class="ka">
+      <option value="" disabled selected>სერვისი</option>
+      <option class="ka">კორპორატიული საიტი</option>
+      <option class="ka">ელ-კომერცია</option>
+      <option class="ka">Landing Page</option>
+      <option class="ka">ვებ აპლიკაცია</option>
+      <option class="ka">დიზაინი & ბრენდინგი</option>
+      <option class="ka">სხვა</option>
+    </select>
+    <textarea placeholder="მოკლედ აღწერეთ თქვენი პროექტი..." class="ka"></textarea>
+    <button type="submit" class="btn-primary ka">გაგზავნა →</button>
+  </form>
+  <div id="success-msg" style="display:none; margin-top:1.5rem; color:var(--gold); font-size:0.9rem;" class="ka">
+    ✓ გმადლობთ! მალე დაგიკავშირდებით.
+  </div>
+</section>
+
+<footer>
+  <p class="ka">© 2024 PKstudio · ყველა უფლება დაცულია</p>
+  <div class="footer-links">
+    <a href="#services" class="ka">სერვისები</a>
+    <a href="#portfolio" class="ka">პორტფოლიო</a>
+    <a href="#contact" class="ka">კონტაქტი</a>
+  </div>
+  <p style="font-size:0.75rem; color:var(--gray);">📍 თბილისი, საქართველო</p>
+</footer>
+
+<script>
+function handleSubmit(e) {
+  e.preventDefault();
+  document.getElementById('success-msg').style.display = 'block';
+  e.target.reset();
+}
+
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const t = document.querySelector(a.getAttribute('href'));
+    if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); }
+  });
+});
+</script>
+</body>
+</html>
